@@ -16,9 +16,11 @@ import dagger.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
@@ -51,16 +53,42 @@ class ApiModule {
                         throw NoNetworkException()
 
                     try {
-                       chain.proceed(requestBuilder.build())
+                        val response =  chain.proceed(requestBuilder.build())
+
+                        if(response.isSuccessful)
+                            response
+                        else {
+                            val responseBody = response.body()?.string() ?: ""
+                            val pair = getErrorMsg(responseBody)
+                            throw WebApiException(pair.first,pair.second)
+                        }
                     } catch (e: SocketTimeoutException) {
                         throw NoNetworkException()
+                    }  catch (e: ConnectException) {
+                        throw NoNetworkException()
                     } catch (e: UnknownHostException) {
-                        throw WebApiException()
+                        throw WebApiException("Unknown Host",-4)
                     } catch (e: SSLPeerUnverifiedException) {
-                        throw WebApiException()
+                        throw WebApiException("SSL Error",-3)
                     }
                 }
                 .build()
+    }
+
+    private fun getErrorMsg(responseBody: String): Pair<String,Int> {
+        try {
+            if (responseBody == "") {
+                return Pair("Error in calling the web api",-2)
+            } else {
+                val jsonError = JSONObject(responseBody)
+                val errorString = jsonError.getString("status_message")
+                val errorCode = jsonError.getInt("status_code")
+
+                return Pair(errorString,errorCode)
+            }
+        }catch (exc:Exception){
+            return Pair("Problem in parsing the error response",-1)
+        }
     }
 
     private fun makeDefaultRetrofit(okHttpClient: OkHttpClient, gson: Gson) : Retrofit {

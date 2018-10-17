@@ -1,7 +1,7 @@
 package com.careem.movietest.app.injection
 
 import com.careem.movietest.app.activity.MainActivity
-import com.careem.movietest.app.fragment.MovieList.MovieListFragment
+import com.careem.movietest.app.fragment.movielist.MovieListFragment
 import dagger.Component
 import javax.inject.Singleton
 

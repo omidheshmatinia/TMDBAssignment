@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialog_noConnection_width"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="16dp"
+    android:background="@drawable/bg_error_dialog_gradient">
+
+    <ImageView
+    android:id="@+id/imageView_dialog_noConnection_cancel"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:tint="@color/white"
+    app:srcCompat="@drawable/ic_clear_vector"
+    android:padding="12dp"
+    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingBottom="16dp"
+        android:paddingRight="16dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center|top"
+            app:srcCompat="@drawable/ic_no_internet_connection_vector"
+            android:layout_margin="16dp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:text="@string/error_youHaveNoInternetConnection"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/button_dialog_noConnection_tryAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_button_round_18r"
+            android:layout_gravity="center|bottom"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            android:layout_marginBottom="6dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="@string/try_again"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"/>
+    </LinearLayout>
+</FrameLayout>

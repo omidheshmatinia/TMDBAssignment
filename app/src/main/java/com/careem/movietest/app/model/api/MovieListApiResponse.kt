@@ -9,4 +9,4 @@ data class MovieListApiResponse(
         @SerializedName("total_results") var totalResults:Long,
         @SerializedName("total_pages") var totalPages:Long,
         var results:List<MovieModel>
-)
+):MasterApiResponse()

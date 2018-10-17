@@ -1,8 +1,9 @@
 package com.careem.movietest.app.injection
 
-import com.careem.movietest.app.fragment.MovieList.MovieListFContract
-import com.careem.movietest.app.fragment.MovieList.MovieListFPresenter
+import com.careem.movietest.app.fragment.movielist.MovieListFContract
+import com.careem.movietest.app.fragment.movielist.MovieListFPresenter
 import com.careem.movietest.app.repository.MovieRepository
+import com.careem.movietest.app.util.ResourceManager
 import dagger.Module
 import dagger.Provides
 
@@ -10,5 +11,5 @@ import dagger.Provides
 class PresenterModule {
 
     @Provides
-    fun provideMovieListFPresenter(mRep:MovieRepository):MovieListFContract.Presenter = MovieListFPresenter(mRep)
+    fun provideMovieListFPresenter(mRep:MovieRepository,rMan: ResourceManager):MovieListFContract.Presenter = MovieListFPresenter(mRep,rMan)
 }
