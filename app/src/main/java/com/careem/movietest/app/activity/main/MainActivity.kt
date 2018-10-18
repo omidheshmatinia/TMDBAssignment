@@ -18,9 +18,12 @@ class MainActivity : MasterActivity(), MainContract.View {
         setContentView(R.layout.activity_main)
         if(lastCustomNonConfigurationInstance==null){
             MasterApplication.appComponent.inject(this)
-            presenter.attachView(this)
         } else {
             presenter = lastCustomNonConfigurationInstance as MainContract.Presenter
+        }
+
+        if(savedInstanceState==null) {
+            presenter.attachView(this)
         }
     }
 

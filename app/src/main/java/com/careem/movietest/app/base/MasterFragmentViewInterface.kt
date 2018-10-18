@@ -9,4 +9,5 @@ interface MasterFragmentViewInterface {
     fun toast(@StringRes messageId: Int)
     fun showNoConnectionDialog(listener:NoConnectionInterface)
     fun dismissSnackBar()
+    fun showSnack(msg: String)
 }

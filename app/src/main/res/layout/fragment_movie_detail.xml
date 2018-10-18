@@ -149,7 +149,7 @@
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:textColor="@color/text_sub"
-                        tools:text="Release Date = 20:29:20"/>
+                        tools:text="average rate"/>
 
                 </LinearLayout>
 
@@ -194,7 +194,7 @@
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:textColor="@color/text_sub"
-                        tools:text="Release Date = 20:29:20"/>
+                        tools:text="runtime"/>
 
                 </LinearLayout>
 
@@ -233,7 +233,7 @@
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:textColor="@color/text_sub"
-                        tools:text="Release Date = 20:29:20"/>
+                        tools:text="budget"/>
 
                 </LinearLayout>
 
@@ -273,7 +273,7 @@
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:textColor="@color/text_sub"
-                        tools:text="Release Date = 20:29:20"/>
+                        tools:text="Revenue"/>
 
                 </LinearLayout>
 

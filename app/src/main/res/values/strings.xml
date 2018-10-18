@@ -3,4 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="error_youHaveNoInternetConnection">We are unable to connect to our servers. Please check your connection</string>
     <string name="try_again">Try Again</string>
+    <string name="button_endDate">End Date</string>
+    <string name="button_startDate">Start Date</string>
+    <string name="button_search">Search</string>
 </resources>

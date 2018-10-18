@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class MovieListApiResponse(
-        var page:Int,
+        var page:Long,
         @SerializedName("total_results") var totalResults:Long,
         @SerializedName("total_pages") var totalPages:Long,
         var results:List<MovieModel>

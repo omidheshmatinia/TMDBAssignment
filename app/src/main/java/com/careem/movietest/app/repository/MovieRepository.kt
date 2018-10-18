@@ -14,7 +14,7 @@ class MovieRepository(private var movieApi:MovieApi,private var apiToken:String)
         queryParams["api_key"] = apiToken
         queryParams["page"] = page.toString()
         queryParams["sort_by"] = "primary_release_date.desc"
-        queryParams["release_date.lte"] = convertDateToString(Calendar.getInstance().time)
+        queryParams["primary_release_date.lte"] = convertDateToString(Calendar.getInstance().time)
         return movieApi.discover(queryParams)
     }
 
@@ -22,8 +22,9 @@ class MovieRepository(private var movieApi:MovieApi,private var apiToken:String)
         val queryParams = mutableMapOf<String,String>()
         queryParams["api_key"] = apiToken
         queryParams["page"] = page.toString()
-        start?.run { queryParams["release_date.lte"] = convertDateToString(start)  }
-        end?.run { queryParams["release_date.gte"] = convertDateToString(end)  }
+        queryParams["sort_by"] = "primary_release_date.desc"
+        start?.run { queryParams["primary_release_date.gte"] = convertDateToString(start)  }
+        end?.run { queryParams["primary_release_date.lte"] = convertDateToString(end)  }
         return movieApi.discover(queryParams)
     }
 

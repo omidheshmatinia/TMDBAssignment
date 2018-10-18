@@ -22,6 +22,13 @@ open class MasterFragment:Fragment(),MasterFragmentViewInterface {
         }
     }
 
+    override fun showSnack(msg: String) {
+        view?.run {
+            snackbar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
+            snackbar!!.show()
+        }
+    }
+
     override fun dismissSnackBar(){
         snackbar?.dismiss()
         snackbar = null

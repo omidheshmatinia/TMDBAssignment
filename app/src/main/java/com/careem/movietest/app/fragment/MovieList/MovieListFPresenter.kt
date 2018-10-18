@@ -18,6 +18,7 @@ import java.util.*
 class MovieListFPresenter(var movieRep:MovieRepository,var resManager:ResourceManager) : MasterFragmentPresenter<MovieListFContract.View>(), MovieListFContract.Presenter {
 
     private var pageIndex = 1
+    private var endOfServerData = false
     private var startDate:Date? = null
     private var endDate:Date? = null
     private var movies:MutableList<MovieModel> = mutableListOf()
@@ -29,8 +30,10 @@ class MovieListFPresenter(var movieRep:MovieRepository,var resManager:ResourceMa
     }
 
     override fun movieListReachEnd() {
-        view?.dismissSnackBar()
-        getItemsFromServer(pageIndex,startDate,endDate)
+        if(!endOfServerData) {
+            view?.dismissSnackBar()
+            getItemsFromServer(pageIndex, startDate, endDate)
+        }
     }
 
     private fun getItemsFromServer(page: Int, beginDate:Date?, endDate:Date?) {
@@ -55,6 +58,13 @@ class MovieListFPresenter(var movieRep:MovieRepository,var resManager:ResourceMa
                     view?.hideProgress(MovieListFContract.ProgressType.BottomProgressbar)
                 }
                 .subscribe( {
+                    if(it.totalResults==0L){
+                        view?.showSnack("There are no data, Please change your date filter")
+                        return@subscribe
+                    }
+                    if(it.page==it.totalPages){
+                        endOfServerData = true
+                    }
                     movies.addAll(it.results)
                     view?.addNewItemsToList(movies.size-it.results.size,it.results.size)
                     pageIndex++
@@ -75,7 +85,58 @@ class MovieListFPresenter(var movieRep:MovieRepository,var resManager:ResourceMa
         })
     }
 
-    private fun showNoNetworkDialog(page: Int, beginDate: Date?, endDate: Date?,error:String) {
+    override fun buttonSearchDateRangeClicked() {
+        pageIndex = 1
+        endOfServerData = false
+        movies.clear()
+        view?.clearList()
+        view?.hideBottomSheet()
+        getItemsFromServer(pageIndex,startDate,endDate)
+    }
+
+    override fun buttonStartDateRangeClicked() {
+        view?.hideBottomSheet()
+        view?.showDateRangeDialog(startDate,true)
+    }
+
+    override fun buttonEndDateRangeClicked() {
+        view?.hideBottomSheet()
+        view?.showDateRangeDialog(endDate,false)
+    }
+
+    override fun buttonDateRangeClicked() {
+        changeDateRangeButtonTexts(MovieListFContract.ButtonType.StartDate,startDate)
+        changeDateRangeButtonTexts(MovieListFContract.ButtonType.EndDate,endDate)
+        view?.showDateChoosingBottomSheet()
+    }
+
+    override fun userChooseNewDateRange(year: Int, month: Int, day: Int, isStartDate: Boolean) {
+       val cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR,year)
+        cal.set(Calendar.MONTH,month)
+        cal.set(Calendar.DAY_OF_MONTH,day)
+        if(isStartDate)
+            startDate = cal.time
+        else
+            endDate = cal.time
+        val type = if(isStartDate) MovieListFContract.ButtonType.StartDate else MovieListFContract.ButtonType.EndDate
+        changeDateRangeButtonTexts(type,cal.time)
+        view?.showDateChoosingBottomSheet()
+    }
+
+    private fun changeDateRangeButtonTexts(type: MovieListFContract.ButtonType, time: Date?) {
+        time?.run {
+            val cal = Calendar.getInstance()
+            cal.time = this
+            val year = cal.get(Calendar.YEAR)
+            val month = cal.get(Calendar.MONTH)+1
+            val day =  cal.get(Calendar.DAY_OF_MONTH)
+            view?.changeButtonText("$year - $month - $day",type)
+        }
+    }
+
+
+    private fun showNoNetworkDialog(page: Int, beginDate: Date?, endDate: Date?, error:String) {
         view?.showNoConnectionDialog(object :NoConnectionInterface{
             override fun tryAgain() {
                 getItemsFromServer(page,beginDate,endDate)

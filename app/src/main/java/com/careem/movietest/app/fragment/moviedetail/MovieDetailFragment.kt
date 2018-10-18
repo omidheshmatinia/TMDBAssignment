@@ -55,8 +55,8 @@ class MovieDetailFragment : MasterFragment(), MovieDetailFContract.View {
 
     override fun changeLayoutsBasedOnScroll() {
         val scrollPosition = scrollView?.scrollY ?: 0
-        val alpha = Math.min(scrollPosition.toFloat() / resources.getDimensionPixelSize(R.dimen.movieDetail_header_height), 1f)
-        val alphaPoster = 1f-Math.min(scrollPosition.toFloat() / resources.getDimensionPixelSize(R.dimen.movieDetailPosterFadeHeight), 1f)
+        val alpha = Math.min(scrollPosition.toFloat() / resources.getDimensionPixelSize(R.dimen.movieDetailPosterFadeHeight), 1f)
+        val alphaPoster = 1f-alpha
         toolbar?.alpha = alpha
         posterImageView?.alpha = alphaPoster
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
