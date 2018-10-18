@@ -11,6 +11,7 @@ import com.careem.movietest.app.R
 import com.careem.movietest.app.adapter.MovieListAdapter
 import com.careem.movietest.app.base.MasterApplication
 import com.careem.movietest.app.base.MasterFragment
+import com.careem.movietest.app.fragment.moviedetail.MovieDetailFragment
 import com.careem.movietest.app.fragment.movielist.MovieListFContract.ProgressType.*
 import com.careem.movietest.app.interfaces.SimpleListClickListener
 import com.careem.movietest.app.interfaces.SnackbarActionListener
@@ -30,6 +31,7 @@ class MovieListFragment : MasterFragment(), MovieListFContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        retainInstance = true
         MasterApplication.appComponent.inject(this)
         presenter.attachView(this)
     }
@@ -66,7 +68,15 @@ class MovieListFragment : MasterFragment(), MovieListFContract.View {
 
     }
 
-    override fun showRetrySnack(msg:String,listener:SnackbarActionListener) {
+    override fun showDetailFragment(movie: MovieModel) {
+        val transaction = activity!!.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.animator.fade_in,R.animator.fade_out,R.animator.fade_in,R.animator.fade_out)
+        transaction.add(R.id.fragment_mainActivity, MovieDetailFragment.newInstance(movie))
+        transaction.addToBackStack("detail")
+        transaction.commit()
+    }
+
+    override fun showRetrySnack(msg:String, listener:SnackbarActionListener) {
         context?.run {
             showSnack(recyclerView_movieListF_movies,msg, Snackbar.LENGTH_INDEFINITE,this.getString(R.string.try_again),{
                 listener.actionClicked()

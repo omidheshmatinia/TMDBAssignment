@@ -18,6 +18,7 @@ interface MovieListFContract {
         fun setupList(items:List<MovieModel>,columnSize:Int)
         fun addNewItemsToList(beginIndex: Int, newItemsSize: Int)
         fun showRetrySnack(msg:String,listener: SnackbarActionListener)
+        fun showDetailFragment(movie: MovieModel)
     }
 
     interface Presenter : MasterFragmentPresenterInterface<View>{

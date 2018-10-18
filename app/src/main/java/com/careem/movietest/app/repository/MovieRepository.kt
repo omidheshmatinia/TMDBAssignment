@@ -1,6 +1,7 @@
 package com.careem.movietest.app.repository
 
 import com.careem.movietest.app.api.MovieApi
+import com.careem.movietest.app.model.MovieDetailModel
 import com.careem.movietest.app.model.api.MovieListApiResponse
 import io.reactivex.Observable
 import java.text.SimpleDateFormat
@@ -26,7 +27,7 @@ class MovieRepository(private var movieApi:MovieApi,private var apiToken:String)
         return movieApi.discover(queryParams)
     }
 
-    fun getMovieDetailFromServer(movieId:Long):Any{
+    fun getMovieDetailFromServer(movieId:Long):Observable<MovieDetailModel>{
         return movieApi.getDetail(movieId,apiToken)
     }
 

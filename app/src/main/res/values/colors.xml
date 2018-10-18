@@ -6,4 +6,6 @@
     <color name="white">#ffffff</color>
     <color name="gradient_start">#0EA0BC</color>
     <color name="gradient_end">#3AB54E</color>
+    <color name="text_main">#222</color>
+    <color name="text_sub">#555</color>
 </resources>

@@ -6,17 +6,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.main.MainActivity">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment"
-        android:name="com.careem.movietest.app.fragment.movielist.MovieListFragment"
+    <FrameLayout
+        android:id="@+id/fragment_mainActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_movie_list"
         />
-
 
 </android.support.design.widget.CoordinatorLayout>

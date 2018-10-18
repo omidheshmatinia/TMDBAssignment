@@ -2,4 +2,5 @@
 <resources>
     <dimen name="dialog_noConnection_width">260dp</dimen>
     <dimen name="movieDetail_header_height">300dp</dimen>
+    <dimen name="movieDetailPosterFadeHeight">40dp</dimen>
 </resources>

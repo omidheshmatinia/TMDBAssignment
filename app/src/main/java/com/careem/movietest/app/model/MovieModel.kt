@@ -12,7 +12,7 @@ data class MovieModel(
         @SerializedName("vote_average") var voteAverage:Double,
         @SerializedName("poster_path") var posterPath:String?,
         @SerializedName("backdrop_path") var backdropPath:String?,
-        @SerializedName("release_date") var releaseDate:Date,
+        @SerializedName("release_date") var releaseDate:String,
         var id:Long,
         var popularity:Double,
         var adult:Boolean,

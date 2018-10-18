@@ -4,7 +4,6 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import com.careem.movietest.app.customview.CustomDialogNoConnection
 import com.careem.movietest.app.interfaces.NoConnectionInterface
@@ -12,9 +11,8 @@ import com.careem.movietest.app.interfaces.NoConnectionInterface
 
 open class MasterFragment:Fragment(),MasterFragmentViewInterface {
 
-    override fun showRetrySnackBar(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    private var snackbar:Snackbar? = null
+
 
     override fun showNoConnectionDialog(listener: NoConnectionInterface) {
         context?.run {
@@ -24,13 +22,16 @@ open class MasterFragment:Fragment(),MasterFragmentViewInterface {
         }
     }
 
-
+    override fun dismissSnackBar(){
+        snackbar?.dismiss()
+        snackbar = null
+    }
 
     fun showSnack(parent: ViewGroup, message: String, length: Int,
                   actionLabel: String? = null, action: ((View) -> Unit)? = null,
                   callback: ((Snackbar) -> Unit)? = null) {
 
-        val snack = Snackbar.make(parent, message, length)
+        snackbar = Snackbar.make(parent, message, length)
                 .apply {
                     if (actionLabel != null) {
                         setAction(actionLabel, action)
@@ -39,7 +40,7 @@ open class MasterFragment:Fragment(),MasterFragmentViewInterface {
                     callback?.invoke(this)
                 }
 
-        snack.show()
+        snackbar!!.show()
     }
 
     override fun toast(message : String) {

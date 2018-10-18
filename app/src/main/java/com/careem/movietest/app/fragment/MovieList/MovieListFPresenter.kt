@@ -29,6 +29,7 @@ class MovieListFPresenter(var movieRep:MovieRepository,var resManager:ResourceMa
     }
 
     override fun movieListReachEnd() {
+        view?.dismissSnackBar()
         getItemsFromServer(pageIndex,startDate,endDate)
     }
 
@@ -44,8 +45,10 @@ class MovieListFPresenter(var movieRep:MovieRepository,var resManager:ResourceMa
                 .doOnSubscribe {
                     if(page == 1)
                         view?.showProgress(MovieListFContract.ProgressType.CenterProgressBar)
-                    else
+                    else {
+                        view?.dismissSnackBar()
                         view?.showProgress(MovieListFContract.ProgressType.BottomProgressbar)
+                    }
                 }
                 .doFinally {
                     view?.hideProgress(MovieListFContract.ProgressType.CenterProgressBar)
@@ -57,30 +60,33 @@ class MovieListFPresenter(var movieRep:MovieRepository,var resManager:ResourceMa
                     pageIndex++
                 },{
                     when(it){
-                        is NoNetworkException -> view?.showNoConnectionDialog(object :NoConnectionInterface{
-                            override fun tryAgain() {
-                                getItemsFromServer(page,beginDate,endDate)
-                            }
-
-                            override fun cancelDialog() {
-                                view?.showRetrySnack(it.message?:"Connection Error",object:SnackbarActionListener{
-                                    override fun actionClicked() {
-                                        getItemsFromServer(page,beginDate,endDate)
-                                    }
-                                })
-                            }
-                        })
-                        else -> view?.showRetrySnack(it.message?:"Error",object:SnackbarActionListener{
-                            override fun actionClicked() {
-                                getItemsFromServer(page,beginDate,endDate)
-                            }
-                        })
+                        is NoNetworkException -> showNoNetworkDialog(page,beginDate,endDate,it.message?:"Connection Error")
+                        else -> showRetrySnackBar(it.message?:"Error",page,beginDate,endDate)
                     }
                 })
                 .addTo(compositeDisposable)
     }
 
+    private fun showRetrySnackBar(error: String, page: Int, beginDate: Date?, endDate: Date?) {
+        view?.showRetrySnack(error,object:SnackbarActionListener{
+            override fun actionClicked() {
+                getItemsFromServer(page,beginDate,endDate)
+            }
+        })
+    }
+
+    private fun showNoNetworkDialog(page: Int, beginDate: Date?, endDate: Date?,error:String) {
+        view?.showNoConnectionDialog(object :NoConnectionInterface{
+            override fun tryAgain() {
+                getItemsFromServer(page,beginDate,endDate)
+            }
+            override fun cancelDialog() {
+                showRetrySnackBar(error,page,beginDate,endDate)
+            }
+        })
+    }
+
     override fun movieListItemClicked(movie: MovieModel) {
-        view?.toast(movie.title)
+        view?.showDetailFragment(movie)
     }
 }

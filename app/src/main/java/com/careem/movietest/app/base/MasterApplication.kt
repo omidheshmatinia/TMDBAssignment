@@ -37,9 +37,9 @@ class MasterApplication:Application() {
 
     private fun getDisplayImageOption(): DisplayImageOptions {
         return DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.notification_tile_bg)
-                .showImageForEmptyUri(R.drawable.notification_tile_bg)
-                .showImageOnFail(R.drawable.notification_tile_bg)
+                .showImageOnLoading(R.drawable.bg_primary_1px)
+                .showImageForEmptyUri(R.drawable.bg_primary_1px)
+                .showImageOnFail(R.drawable.bg_primary_1px)
                 .cacheInMemory(false)
                 .cacheOnDisk(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
