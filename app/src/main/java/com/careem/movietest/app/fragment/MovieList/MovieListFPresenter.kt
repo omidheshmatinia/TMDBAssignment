@@ -17,7 +17,7 @@ import java.util.*
 
 class MovieListFPresenter(var movieRep:MovieRepository,var resManager:ResourceManager) : MasterFragmentPresenter<MovieListFContract.View>(), MovieListFContract.Presenter {
 
-    private var pageIndex = 1
+    var pageIndex = 1
     private var endOfServerData = false
     private var startDate:Date? = null
     private var endDate:Date? = null

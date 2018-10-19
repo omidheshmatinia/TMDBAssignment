@@ -1,8 +1,6 @@
 package com.careem.movietest.app.fragment.moviedetail
 
 
-import android.support.design.widget.Snackbar
-import com.careem.movietest.app.R
 import com.careem.movietest.app.base.MasterFragmentPresenter
 import com.careem.movietest.app.base.PublicConstant
 import com.careem.movietest.app.interfaces.NoConnectionInterface
@@ -13,14 +11,12 @@ import com.careem.movietest.app.repository.MovieRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_movie_list.*
 import java.lang.Exception
-import java.util.*
 
 
 class MovieDetailFPresenter(var movieRep:MovieRepository) : MasterFragmentPresenter<MovieDetailFContract.View>(), MovieDetailFContract.Presenter {
 
-    private lateinit var movie:MovieModel
+    lateinit var movie:MovieModel
 
     override fun attachView(view: MovieDetailFContract.View) {
         super.attachView(view)

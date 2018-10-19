@@ -4,8 +4,8 @@ import io.reactivex.disposables.CompositeDisposable
 
 
 open class MasterActivityPresenter<T : MasterActivityViewInterface> :MasterActivityPresenterInterface<T>{
-    protected var compositeDisposable : CompositeDisposable = CompositeDisposable()
-    protected var view : T? =null
+    var compositeDisposable : CompositeDisposable = CompositeDisposable()
+    var view : T? =null
 
     override fun destroy() {
         view = null
