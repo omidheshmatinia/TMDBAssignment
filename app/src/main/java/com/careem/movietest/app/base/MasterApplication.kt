@@ -35,6 +35,10 @@ class MasterApplication:Application() {
         m.init(config)
     }
 
+    public fun setComponent(comp:AppComponent){
+        appComponent = comp
+    }
+
     private fun getDisplayImageOption(): DisplayImageOptions {
         return DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_primary_1px)

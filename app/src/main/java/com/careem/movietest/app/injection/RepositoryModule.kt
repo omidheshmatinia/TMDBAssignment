@@ -9,9 +9,9 @@ import javax.inject.Singleton
 
 
 @Module
-class RepositoryModule {
+open class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideMovieRepository(mApi:MovieApi):MovieRepository = MovieRepository(mApi,PublicConstant.ApiToken)
+    open fun provideMovieRepository(mApi:MovieApi):MovieRepository = MovieRepository(mApi,PublicConstant.ApiToken)
 }

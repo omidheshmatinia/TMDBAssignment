@@ -1,5 +1,6 @@
 package com.careem.movietest.app.repository
 
+import com.careem.movietest.app.OpenClassOnDebug
 import com.careem.movietest.app.api.MovieApi
 import com.careem.movietest.app.model.MovieDetailModel
 import com.careem.movietest.app.model.api.MovieListApiResponse
@@ -7,7 +8,8 @@ import io.reactivex.Observable
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MovieRepository(private var movieApi:MovieApi,private var apiToken:String) {
+@OpenClassOnDebug
+class MovieRepository( var movieApi:MovieApi, var apiToken:String) {
 
     fun getRecentMoviesFromServer(page:Int):Observable<MovieListApiResponse>{
         val queryParams = mutableMapOf<String,String>()

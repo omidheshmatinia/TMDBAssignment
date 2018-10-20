@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-allopen'
 
 android {
     compileSdkVersion 27
@@ -29,6 +30,10 @@ androidExtensions {
     experimental = true
 }
 
+allOpen {
+    annotation 'com.careem.movietest.app.OpenClass'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -41,9 +46,13 @@ dependencies {
     // test
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.23.0'
+    androidTestImplementation "com.android.support:support-annotations:$support_version"
+    androidTestImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.15'
 
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
