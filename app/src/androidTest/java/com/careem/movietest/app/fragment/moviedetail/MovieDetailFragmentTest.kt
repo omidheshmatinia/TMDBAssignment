@@ -31,17 +31,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import javax.inject.Inject
-import android.view.WindowManager
-import android.app.KeyguardManager
-import android.content.Context
-import android.support.test.espresso.Espresso
-import android.support.test.rule.UiThreadTestRule
-import org.junit.BeforeClass
 
-
-
-
-@RunWith(AndroidJUnit4::class)
 class MovieDetailFragmentTest : MasterAndroidTest() {
 
     private val posterPath = "pathP"
@@ -62,32 +52,14 @@ class MovieDetailFragmentTest : MasterAndroidTest() {
     @Rule
     @JvmField
     var activityTestRule = ActivityTestRule(TestActivity::class.java,true,true)
-    @Rule
-    @JvmField
-    public var uiThreadTestRule: UiThreadTestRule = UiThreadTestRule()
 
     @Inject
     lateinit var movieRepository:MovieRepository
 
-
-    fun setUpWakeUp(){
-        uiThreadTestRule.runOnUiThread {
-
-            val myKM = activityTestRule.activity.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-            val isPhoneLocked = myKM.inKeyguardRestrictedInputMode()
-
-            if (isPhoneLocked) {
-                activityTestRule.activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                        or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
-            }
-        }
-    }
-
     @Before
-    @UiThreadTest
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val app:MasterApplication = instrumentation.targetContext
                 .applicationContext as MasterApplication
@@ -102,16 +74,7 @@ class MovieDetailFragmentTest : MasterAndroidTest() {
         fixRxJavaSchedulers()
         // for repository
         Mockito.doReturn(Observable.just(makeSampleMovie())).`when`(movieRepository).getMovieDetailFromServer(ArgumentMatchers.anyLong())
-
         activityTestRule.activity.setFragment(MovieDetailFragment.newInstance(makeSampleMovie()))
-
-        // turn on the screen to avoid exception
-//        activityTestRule.activity.runOnUiThread{
-//            val km =  activityTestRule.activity.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-//            val keyguardLock = km.newKeyguardLock("TAG")
-//            keyguardLock.disableKeyguard()
-//            activityTestRule.activity.window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
-//        }
     }
 
     private fun makeSampleMovie(): MovieModel {
@@ -121,8 +84,16 @@ class MovieDetailFragmentTest : MasterAndroidTest() {
     @Test
     fun showConnectionDialogWhenThereIsConnectionError(){
         Mockito.doReturn(Observable.error<NoNetworkException>(NoNetworkException())).`when`(movieRepository).getMovieDetailFromServer(ArgumentMatchers.anyLong())
-// check title is shown
+        // check title is shown
         onView(withId(R.id.button_dialog_noConnection_tryAgain)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun showSnackBarWhenOnError(){
+        Mockito.doReturn(Observable.error<Exception>(Exception("Error Happened Bro"))).`when`(movieRepository).getMovieDetailFromServer(ArgumentMatchers.anyLong())
+        // check snackBar is shown
+        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText("Error Happened Bro")))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
 
     @Test
